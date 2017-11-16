@@ -1,5 +1,11 @@
 SOURCES += \
-    main.cpp
+    main.cpp \
+    Client.cpp \
+    Server.cpp
 
 QT += core gui \
-    widgets
+    widgets network
+
+HEADERS += \
+    Client.h \
+    Server.h
