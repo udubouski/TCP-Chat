@@ -7,8 +7,10 @@ class QTcpServer;
 class QTextEdit;
 class QTcpSocket;
 
-class Server : public QWidget {
-Q_OBJECT
+class Server : public QWidget
+{
+    Q_OBJECT
+
 private:
     QTcpServer* m_ptcpServer;
     QTextEdit*  m_ptxt;
