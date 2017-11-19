@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets>
+#include <QNetworkInterface>
 #include "Client.h"
 
 class MainWindow : public QDialog
@@ -12,25 +13,39 @@ public:
     MainWindow(QWidget *parent=0);
 
 private:
-    QLineEdit* m_pClientName;
-    QLineEdit* m_pIpv4Adress;
-    QLineEdit* m_pPort;
+    QVBoxLayout* m_pMainLayout;
+    QVBoxLayout* m_pUpLayout;
+    QVBoxLayout* m_pDownLayout;
+
     QRadioButton* m_pCreateServer;
     QRadioButton* m_pConnectServer;
 
-    QAction* m_pCreate;
-    QAction* m_pConnect;
-    QAction* m_pOk;
-    QAction* m_pExit;
+    QLineEdit* m_pPort;
+    QLineEdit* m_pIpv4Adress;
+    QLineEdit* m_pClientName;
+
+    QLabel* m_plPort;
+    QLabel* m_plIpAdr;
+    QLabel* m_plClientName;
+
+    QPushButton* m_pButOk;
+    QPushButton* m_pButExit;
 
     Client* m_pClient;
+    Server* m_pServer;
 
     void createWidget();
-    void createActions();
     void createConnections();
+    void createPortInput();
+    void createIpv4Input();
+    void hideDownLayout();
+    void showDownLayout();
+    QString localIP();
 
 private slots:
-    void createClientConnection();
+    void createInputForNewServer();
+    void createInputForExistingServer();
+    void createConnection();
 
 };
 #endif // MAINWINDOW_H

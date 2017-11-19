@@ -1,30 +1,28 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <QWidget>
+#include <QtNetwork>
+#include <QtWidgets>
 
 class QTcpServer;
-class QTextEdit;
 class QTcpSocket;
 
 class Server : public QWidget
 {
     Q_OBJECT
 
-private:
-    QTcpServer* m_ptcpServer;
-    QTextEdit*  m_ptxt;
-    quint16     m_nNextBlockSize;
-
-private:
-    void sendToClient(QTcpSocket* pSocket, const QString& str);
-
 public:
     Server(int nPort, QWidget* pwgt = 0);
 
+private:
+    QTcpServer* m_ptcpServer;
+    quint16     m_nNextBlockSize;
+
+    void sendToClient(QTcpSocket* pSocket, const QString& str);
+
 public slots:
-    virtual void slotNewConnection();
-            void slotReadClient   ();
+    void slotNewConnection();
+    void slotReadClient   ();
 };
 
 #endif // SERVER_H

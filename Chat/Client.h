@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include <QTcpSocket>
+#include <Server.h>
 
 class Client: public QDialog
 {
@@ -16,6 +17,8 @@ private:
     QTextEdit*  m_ptxtMessage;
     QLineEdit*  m_ptxtInput;
     quint16     m_nNextBlockSize;
+
+    Server* m_pServer;
 
 private slots:
     void sendToServer();
