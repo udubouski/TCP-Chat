@@ -4,7 +4,6 @@
 Server::Server(int nPort, QWidget* pwgt) : QWidget(pwgt), m_nNextBlockSize(0)
 {
     m_ptcpServer = new QTcpServer(this);
-
     if (!m_ptcpServer->listen(QHostAddress::Any, nPort)) {
         QMessageBox::critical(0, "Server Error", "Unable to start the server:"+ m_ptcpServer->errorString());
         m_ptcpServer->close();
@@ -45,9 +44,8 @@ void Server::slotReadClient()
         QString str;
         in >> time >> str;
 
-        QString strMessage =
-            time.toString() + " " + "Client has sent - " + str;
-        //m_ptxt->append(strMessage);
+        QString strMessage = time.toString() + " " + "Client has sent - " + str;
+        m_strMesg=strMessage;
 
         m_nNextBlockSize = 0;
 

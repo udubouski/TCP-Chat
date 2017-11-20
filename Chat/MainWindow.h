@@ -4,6 +4,7 @@
 #include <QtWidgets>
 #include <QNetworkInterface>
 #include "Client.h"
+#include "Server.h"
 
 class MainWindow : public QDialog
 {
@@ -34,6 +35,8 @@ private:
     Client* m_pClient;
     Server* m_pServer;
 
+    QString m_Message;
+
     void createWidget();
     void createConnections();
     void createPortInput();
@@ -47,5 +50,7 @@ private slots:
     void createInputForExistingServer();
     void createConnection();
 
+public slots:
+    void requestMessage();
 };
 #endif // MAINWINDOW_H

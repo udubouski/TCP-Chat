@@ -123,11 +123,16 @@ void MainWindow::createConnection()
     QString strClientName = m_pClientName->text();
     QString sIpv4;
 
-    if (m_pCreateServer->isChecked()) sIpv4 = localIP();
+    if (m_pCreateServer->isChecked())
+    {
+        m_pServer = new Server(iPort);
+        sIpv4 = localIP();
+    }
     else sIpv4 = m_pIpv4Adress->text();
 
-    m_pClient = new Client(sIpv4,iPort,strClientName,this);
+    m_pClient = new Client(sIpv4,iPort,strClientName);
     m_pClient->show();
+    connect(m_pClient,SIGNAL(sendMessage()),this,SLOT(requestMessage()));
 }
 
 QString MainWindow::localIP()
@@ -136,4 +141,10 @@ QString MainWindow::localIP()
     QList<QHostAddress> addr = QNetworkInterface::allAddresses();
     locIP = addr.first().toString();
     return locIP;
+}
+
+void MainWindow::requestMessage()
+{
+    QString essage=m_pServer->getMessage();
+    m_pClient->answerMessage(essage);
 }
