@@ -45,7 +45,7 @@ void Server::slotReadClient()
         in >> time >> str;
 
         QString strMessage = time.toString() + " " + "Client has sent - " + str;
-        m_strMesg=strMessage;
+
 
         m_nNextBlockSize = 0;
 

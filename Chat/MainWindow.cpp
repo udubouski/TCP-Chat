@@ -132,7 +132,7 @@ void MainWindow::createConnection()
 
     m_pClient = new Client(sIpv4,iPort,strClientName);
     m_pClient->show();
-    connect(m_pClient,SIGNAL(sendMessage()),this,SLOT(requestMessage()));
+
 }
 
 QString MainWindow::localIP()
@@ -143,8 +143,3 @@ QString MainWindow::localIP()
     return locIP;
 }
 
-void MainWindow::requestMessage()
-{
-    QString essage=m_pServer->getMessage();
-    m_pClient->answerMessage(essage);
-}

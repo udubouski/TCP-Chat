@@ -31,7 +31,6 @@ Client::Client(const QString& strHost, int nPort, const QString& strClientName, 
     pvbxMain->addLayout(phbxButtons);
     setLayout(pvbxMain);
 
-    connect(pButnSend,SIGNAL(clicked()),this,SLOT(Message()));
 }
 
 void Client::slotReadyRead()
@@ -53,8 +52,7 @@ void Client::slotReadyRead()
         QString str;
         in >> time >> str;
 
-        m_ptxtMessage->append(m_strClientName + ":" + m_strMessage);
-        //m_ptxtMessage->append(time.toString() + " " + str);
+        m_ptxtMessage->append(time.toString() + " " + str);
         m_nNextBlockSize = 0;
     }
 }

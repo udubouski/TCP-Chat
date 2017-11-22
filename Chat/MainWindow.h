@@ -50,7 +50,5 @@ private slots:
     void createInputForExistingServer();
     void createConnection();
 
-public slots:
-    void requestMessage();
 };
 #endif // MAINWINDOW_H
