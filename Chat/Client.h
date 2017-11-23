@@ -4,6 +4,8 @@
 #include <QtWidgets>
 #include <QTcpSocket>
 
+class ISocketAdapter;
+
 class Client: public QDialog
 {
     Q_OBJECT
@@ -24,5 +26,13 @@ private slots:
     void slotSendToServer(                            );
     void slotConnected   (                            );
 
+
+public slots:
+    void on_message(QString text);
+    void on_send();
+
+protected:
+    ISocketAdapter *m_pSock;
 };
+
 #endif // CLIENT_H

@@ -1,25 +1,29 @@
 #include "Client.h"
+#include "clientsocketadapter.h"
 
 Client::Client(const QString& strHost, int nPort, const QString& strClientName, QWidget* parent) : QDialog(parent), m_nNextBlockSize(0)
 {
-    m_pTcpSocket = new QTcpSocket(this);
-    m_pTcpSocket->connectToHost(strHost, nPort);
-    connect(m_pTcpSocket, SIGNAL(connected()), SLOT(slotConnected()));
-    connect(m_pTcpSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
-    connect(m_pTcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(slotError(QAbstractSocket::SocketError)));
+    m_pSock = new ClientSocketAdapter(this);
+    connect(m_pSock, SIGNAL(message(QString)), SLOT(on_message(QString)));
+
+    //m_pTcpSocket = new QTcpSocket(this);
+   // m_pTcpSocket->connectToHost(strHost, nPort);
+   // connect(m_pTcpSocket, SIGNAL(connected()), SLOT(slotConnected()));
+   // connect(m_pTcpSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
+   // connect(m_pTcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(slotError(QAbstractSocket::SocketError)));
 
     m_strClientName=strClientName;
     m_ptxtMessage = new QTextEdit;
     m_ptxtMessage->setReadOnly(true);
     m_ptxtInput = new QLineEdit;
-    connect(m_ptxtInput, SIGNAL(returnPressed()), this, SLOT(slotSendToServer()));
+   // connect(m_ptxtInput, SIGNAL(returnPressed()), this, SLOT(slotSendToServer()));
 
     QPushButton* pButnSend = new QPushButton(tr("Send"));
     QPushButton* pButnExit = new QPushButton(tr("Exit"));
-    connect(pButnSend, SIGNAL(clicked()), SLOT(slotSendToServer()));
-
-    connect(pButnSend,SIGNAL(clicked()), this, SLOT(sendToServer()));
-    connect(pButnExit,SIGNAL(clicked()), this, SLOT(close()));
+    //connect(pButnSend, SIGNAL(clicked()), SLOT(slotSendToServer()));
+     connect(pButnSend, SIGNAL(clicked()), SLOT(on_send()));
+   // connect(pButnSend,SIGNAL(clicked()), this, SLOT(sendToServer()));
+    //connect(pButnExit,SIGNAL(clicked()), this, SLOT(close()));
 
     QHBoxLayout* phbxButtons = new QHBoxLayout;
     phbxButtons->addWidget(pButnSend);
@@ -90,4 +94,15 @@ void Client::slotConnected()
     m_ptxtMessage->append("Received the connected() signal");
 }
 
+void Client::on_message(QString text)
+{
+    m_ptxtMessage->setHtml(m_ptxtMessage->toHtml()+m_strClientName +":" + text + "<br>");
+    //m_ptxtMessage->append(text);
+}
+
+void Client::on_send()
+{
+    m_pSock->sendString(m_ptxtInput->text());
+    m_ptxtInput->clear();
+}
 

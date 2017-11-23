@@ -11,7 +11,7 @@ class MainWindow : public QDialog
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent=0);
+    explicit MainWindow(QWidget *parent=0);
 
 private:
     QVBoxLayout* m_pMainLayout;
@@ -52,3 +52,5 @@ private slots:
 
 };
 #endif // MAINWINDOW_H
+
+
