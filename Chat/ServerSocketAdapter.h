@@ -1,7 +1,7 @@
 #ifndef SERVERSOCKETADAPTER_H
 #define SERVERSOCKETADAPTER_H
 
-# include "socketadapter.h"
+# include "SocketAdapter.h"
 
 class ServerSocketAdapter : public SocketAdapter
 {

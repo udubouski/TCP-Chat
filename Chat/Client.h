@@ -17,19 +17,11 @@ private:
     QTcpSocket* m_pTcpSocket;
     QTextEdit*  m_ptxtMessage;
     QLineEdit*  m_ptxtInput;
-    quint16     m_nNextBlockSize;
     QString m_strClientName;
 
-private slots:
-    void slotReadyRead   (                            );
-    void slotError       (QAbstractSocket::SocketError);
-    void slotSendToServer(                            );
-    void slotConnected   (                            );
-
-
 public slots:
-    void on_message(QString text);
-    void on_send();
+    void slotMessage(QString text);
+    void slotSend();
 
 protected:
     ISocketAdapter *m_pSock;

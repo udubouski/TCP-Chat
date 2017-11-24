@@ -45,7 +45,7 @@ void MainWindow::createConnections()
 {
     connect(m_pCreateServer,SIGNAL(clicked()),this,SLOT(createInputForNewServer()));
     connect(m_pConnectServer,SIGNAL(clicked()),this,SLOT(createInputForExistingServer()));
-    connect(m_pButOk,SIGNAL(clicked()), this, SLOT(createConnection()));
+    connect(m_pButOk,SIGNAL(clicked()), this, SLOT(createClientConnection()));
     connect(m_pButOk,SIGNAL(clicked()), this, SLOT(hide()));
     connect(m_pButExit,SIGNAL(clicked()), this, SLOT(close()));
 }
@@ -117,7 +117,7 @@ void MainWindow::showDownLayout()
     m_pButExit->show();
 }
 
-void MainWindow::createConnection()
+void MainWindow::createClientConnection()
 {
     qint64 iPort = m_pPort->text().toInt();
     QString strClientName = m_pClientName->text();

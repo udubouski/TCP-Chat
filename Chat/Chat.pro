@@ -3,10 +3,10 @@ SOURCES += \
     Client.cpp \
     Server.cpp \
     MainWindow.cpp \
-    isocketadapter.cpp \
-    socketadapter.cpp \
-    clientsocketadapter.cpp \
-    serversocketadapter.cpp
+    ClientSocketAdapter.cpp \
+    ISocketAdapter.cpp \
+    ServerSocketAdapter.cpp \
+    SocketAdapter.cpp
 
 QT += core gui \
     widgets network
@@ -15,7 +15,8 @@ HEADERS += \
     Client.h \
     Server.h \
     MainWindow.h \
-    socketadapter.h \
-    isocketadapter.h \
-    clientsocketadapter.h \
-    serversocketadapter.h
+    ClientSocketAdapter.h \
+    ISocketAdapter.h \
+    ServerSocketAdapter.h \
+    SocketAdapter.h \
+    ServerSocketAdapter.h

@@ -1,29 +1,20 @@
 #include "Client.h"
-#include "clientsocketadapter.h"
+#include "ClientSocketAdapter.h"
 
-Client::Client(const QString& strHost, int nPort, const QString& strClientName, QWidget* parent) : QDialog(parent), m_nNextBlockSize(0)
+Client::Client(const QString& strHost, int nPort, const QString& strClientName, QWidget* parent) : QDialog(parent)
 {
     m_pSock = new ClientSocketAdapter(this);
-    connect(m_pSock, SIGNAL(message(QString)), SLOT(on_message(QString)));
-
-    //m_pTcpSocket = new QTcpSocket(this);
-   // m_pTcpSocket->connectToHost(strHost, nPort);
-   // connect(m_pTcpSocket, SIGNAL(connected()), SLOT(slotConnected()));
-   // connect(m_pTcpSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
-   // connect(m_pTcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(slotError(QAbstractSocket::SocketError)));
+    connect(m_pSock, SIGNAL(message(QString)), SLOT(slotMessage(QString)));
 
     m_strClientName=strClientName;
     m_ptxtMessage = new QTextEdit;
     m_ptxtMessage->setReadOnly(true);
     m_ptxtInput = new QLineEdit;
-   // connect(m_ptxtInput, SIGNAL(returnPressed()), this, SLOT(slotSendToServer()));
 
     QPushButton* pButnSend = new QPushButton(tr("Send"));
     QPushButton* pButnExit = new QPushButton(tr("Exit"));
-    //connect(pButnSend, SIGNAL(clicked()), SLOT(slotSendToServer()));
-     connect(pButnSend, SIGNAL(clicked()), SLOT(on_send()));
-   // connect(pButnSend,SIGNAL(clicked()), this, SLOT(sendToServer()));
-    //connect(pButnExit,SIGNAL(clicked()), this, SLOT(close()));
+    connect(pButnSend, SIGNAL(clicked()), SLOT(slotSend()));
+    connect(pButnExit,SIGNAL(clicked()), this, SLOT(close()));
 
     QHBoxLayout* phbxButtons = new QHBoxLayout;
     phbxButtons->addWidget(pButnSend);
@@ -34,75 +25,19 @@ Client::Client(const QString& strHost, int nPort, const QString& strClientName, 
     pvbxMain->addWidget(m_ptxtInput);
     pvbxMain->addLayout(phbxButtons);
     setLayout(pvbxMain);
-
+    setWindowTitle("Chat. Client - " + m_strClientName);
 }
 
-void Client::slotReadyRead()
+void Client::slotMessage(QString text)
 {
-    QDataStream in(m_pTcpSocket);
-    in.setVersion(QDataStream::Qt_5_3);
-    for (;;) {
-        if (!m_nNextBlockSize) {
-            if (m_pTcpSocket->bytesAvailable() < (int)sizeof(quint16)) {
-                break;
-            }
-            in >> m_nNextBlockSize;
-        }
-
-        if (m_pTcpSocket->bytesAvailable() < m_nNextBlockSize) {
-            break;
-        }
-        QTime   time;
-        QString str;
-        in >> time >> str;
-
-        m_ptxtMessage->append(time.toString() + " " + str);
-        m_nNextBlockSize = 0;
-    }
+    m_ptxtMessage->setHtml(m_ptxtMessage->toHtml() + text + "<br>");
 }
 
-void Client::slotError(QAbstractSocket::SocketError err)
+void Client::slotSend()
 {
-    QString strError =
-        "Error: " + (err == QAbstractSocket::HostNotFoundError ?
-                     "The host was not found." :
-                     err == QAbstractSocket::RemoteHostClosedError ?
-                     "The remote host is closed." :
-                     err == QAbstractSocket::ConnectionRefusedError ?
-                     "The connection was refused." :
-                     QString(m_pTcpSocket->errorString())
-                    );
-    m_ptxtMessage->append(strError);
-}
-
-void Client::slotSendToServer()
-{
-    QByteArray  arrBlock;
-    QDataStream out(&arrBlock, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_3);
-    out << quint16(0) << QTime::currentTime() << m_ptxtInput->text();
-
-    out.device()->seek(0);
-    out << quint16(arrBlock.size() - sizeof(quint16));
-
-    m_pTcpSocket->write(arrBlock);
-    m_ptxtInput->setText("");
-}
-
-void Client::slotConnected()
-{
-    m_ptxtMessage->append("Received the connected() signal");
-}
-
-void Client::on_message(QString text)
-{
-    m_ptxtMessage->setHtml(m_ptxtMessage->toHtml()+m_strClientName +":" + text + "<br>");
-    //m_ptxtMessage->append(text);
-}
-
-void Client::on_send()
-{
-    m_pSock->sendString(m_ptxtInput->text());
+    QTime currTime = QTime::currentTime();
+    QString strTime = currTime.toString();
+    m_pSock->sendString(strTime + " - " + m_strClientName + " : " + m_ptxtInput->text());
     m_ptxtInput->clear();
 }
 

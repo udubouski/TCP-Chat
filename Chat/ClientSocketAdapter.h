@@ -1,7 +1,7 @@
 #ifndef CLIENTSOCKETADAPTER_H
 #define CLIENTSOCKETADAPTER_H
 
-# include "socketadapter.h"
+# include "SocketAdapter.h"
 
 class ClientSocketAdapter : public SocketAdapter
 {

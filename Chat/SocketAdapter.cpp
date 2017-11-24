@@ -1,4 +1,4 @@
-#include "socketadapter.h"
+#include "SocketAdapter.h"
 
 #include <QVector>
 #include <QTcpSocket>

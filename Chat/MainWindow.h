@@ -48,7 +48,7 @@ private:
 private slots:
     void createInputForNewServer();
     void createInputForExistingServer();
-    void createConnection();
+    void createClientConnection();
 
 };
 #endif // MAINWINDOW_H
